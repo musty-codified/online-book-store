@@ -1,0 +1,34 @@
+package com.mustycodified.online_book_store.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "users")
+public class User extends Base{
+
+    @Column(nullable = false, length = 50)
+    private String firstName;
+
+    @Column(nullable = false, length = 50)
+    private String lastName;
+
+    @Column(nullable = false, length = 50, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String role;
+
+    private BigDecimal walletBalance = BigDecimal.valueOf(500);
+
+}

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:book_store_db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8090
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+

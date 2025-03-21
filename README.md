@@ -14,6 +14,15 @@ An online Book Store API developed with **Spring boot** and secured using **JWT-
 
 ```
 online-book-store/
+│──config (Security config)
+│──controller (Controller layer)
+│──dto (data transfer objects)
+│──entity (models of the application)
+│──enums ( enum objects)
+│──exception (exception handling class)
+│──repository (DAOs or data access objects)
+│──service (business logic )
+│──util (utility class)
 
 ```
 ---

@@ -4,8 +4,6 @@ package com.mustycodified.online_book_store.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

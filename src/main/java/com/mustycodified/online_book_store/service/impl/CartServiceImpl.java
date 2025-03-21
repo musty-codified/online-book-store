@@ -28,16 +28,17 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponseDto viewCartContent(Long userId) {
-        Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart Not found", HttpStatus.NOT_FOUND.name()));
+        Cart cart = cartRepository.findByUserId(userId).orElseGet(() -> {
+            User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
+            return cartRepository.save(Cart.builder().user(user).build());
+        });
         return mapper.mapToCartDto(cart);
-
     }
 
     @Override
     public CartItemsDto addToCart(Long userId, CartItemsDto cartItemsDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found", HttpStatus.NOT_FOUND.name()));
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
         Cart cart = user.getCart();
         CartItem cartItem = mapper.mapToCartItems(cartItemsDto);
         assert cart != null;

@@ -1,8 +1,10 @@
 package com.mustycodified.online_book_store.controller;
 
+import com.mustycodified.online_book_store.dto.request.OrderRequestDto;
 import com.mustycodified.online_book_store.dto.response.ApiResponse;
 import com.mustycodified.online_book_store.dto.response.OrderResponseDto;
 import com.mustycodified.online_book_store.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +22,9 @@ import java.util.List;
 
 public class OrderController {
     private final OrderService orderService;
-    @PostMapping("/{userId}/checkout")
-    public ResponseEntity<ApiResponse<OrderResponseDto>> createOrder(@PathVariable(value = "userId") Long userId) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Request successfully processed", orderService.createOrder(userId)));
+    @PostMapping("/checkout")
+    public ResponseEntity<ApiResponse<OrderResponseDto>> createOrder(@Valid @RequestBody OrderRequestDto orderRequestDto) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Request successfully processed", orderService.createOrder(orderRequestDto)));
     }
 
     @GetMapping("/{userId}/history")

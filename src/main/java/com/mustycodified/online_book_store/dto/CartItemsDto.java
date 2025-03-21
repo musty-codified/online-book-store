@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CartItemsDto {
-
     private Long bookId;
     private int quantity;
     private double price;

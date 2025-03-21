@@ -1,6 +1,7 @@
 package com.mustycodified.online_book_store.service.impl;
 
 import com.mustycodified.online_book_store.dto.OrderItemsDto;
+import com.mustycodified.online_book_store.dto.request.OrderRequestDto;
 import com.mustycodified.online_book_store.dto.response.ApiResponse;
 import com.mustycodified.online_book_store.dto.response.BookResponseDto;
 import com.mustycodified.online_book_store.dto.response.OrderResponseDto;
@@ -21,10 +22,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,56 +38,43 @@ public class OrderServiceImpl implements OrderService {
     private final CartService cartService;
     private final CustomMapper mapper;
 
+    private final PaymentService paymentService;
+
     @Override
-    public OrderResponseDto createOrder(Long userId) {
-        Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart Not found", HttpStatus.NOT_FOUND.name()));
+    @Transactional
+    public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
+        Cart cart = cartRepository.findByUserId(orderRequestDto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cart Not Found", HttpStatus.NOT_FOUND.name()));
         List<CartItem> cartItems = cart.getCartItems();
         double totalPrice = cartItems.stream()
                 .mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
-
-        List<OrderItem> orderItems = new ArrayList<>();
         User user = cart.getUser();
-        BigDecimal balance = cart.getUser().getWalletBalance();
-        BigDecimal grandTotal = new BigDecimal(totalPrice);
-
-        if(balance.compareTo(grandTotal) < 0)
-            throw new CustomValidationException("Insufficient balance");
-
-      BigDecimal newBalance = user.getWalletBalance().subtract(grandTotal);
-      user.setWalletBalance(newBalance);
-
         Order order = Order.builder()
                 .orderDate(LocalDateTime.now())
                 .orderStatus(OrderStatus.PENDING.toString())
                 .grandTotal(totalPrice)
                 .user(user)
-                .paymentMethod(PaymentMethod.TRANSFER)
+                .paymentMethod(orderRequestDto.getPaymentMethod())
                 .build();
-
-        for (CartItem cartItem : cartItems) {
-            orderItems.add(new OrderItem(cartItem.getBook(), order, cartItem.getQuantity(), cartItem.getPrice()));
-        }
+        List<OrderItem> orderItems = cartItems.stream()
+                .map(cartItem -> new OrderItem(cartItem.getBook(), order, cartItem.getQuantity(), cartItem.getPrice())).toList();
         order.setOrderItems(orderItems);
         orderRepository.save(order);
-        userRepository.save(user);
-        cartService.clearCart(userId);
+        cartService.clearCart(orderRequestDto.getUserId());
 
+        paymentService.processPayment(order);
         return mapper.mapToOrderResponseDto(order);
     }
 
     @Override
     public ApiResponse.Wrapper<List<OrderResponseDto>> viewPurchaseHistory(Long userId, Pageable pageable) {
         Page<Order> orderPage = orderRepository.fetchAllOrders(userId, pageable);
-
         if (orderPage.isEmpty()) {
             throw new ResourceNotFoundException("No Record was found", HttpStatus.NOT_FOUND.toString());
         }
         List<OrderResponseDto> responses = orderPage.getContent().stream()
                 .map(mapper::mapToOrderResponseDto)
                 .collect(Collectors.toList());
-
-
         return new ApiResponse.Wrapper<>(
                 responses,
                 orderPage.getTotalPages(),

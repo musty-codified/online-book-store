@@ -79,6 +79,7 @@ public class CustomMapper {
         List<OrderItemsDto> orderItemsDto = orderItems.stream().map(this::mapToOrderItemsDto).toList();
         return OrderResponseDto.builder()
                 .grandTotal(order.getGrandTotal())
+                .orderStatus(order.getOrderStatus())
                 .userId(order.getUser().getId())
                 .orderItemsDto(orderItemsDto)
                 .build();

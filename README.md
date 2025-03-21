@@ -22,7 +22,7 @@ online-book-store/
 
 - **Clone the repository:**
   `git clone https://github.com/musty-codified/online-book-store.git`
-- **Build and run the server using maven:** `mvn clean install`
+- **Build the download dependencies using maven:** `mvn clean install`
 
 - **Configure environment:** Open and configure `application-dev.yml` with your H2 Database configurations.
 

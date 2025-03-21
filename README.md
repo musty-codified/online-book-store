@@ -22,15 +22,13 @@ online-book-store/
 
 - **Clone the repository:**
   `git clone https://github.com/musty-codified/online-book-store.git`
-- **Build and run the backend project using maven:**
+- **Build and run the server using maven:**
 
   `mvn clean install`
 
 - **Configure environment:** Open and configure `application-dev.yml` with your H2 Database configurations.
 
-- **Start the server:**
-
-  `mvn spring-boot:run`
+- **Start the server:** `mvn spring-boot:run`
 
 - The server will start on **`http://localhost:8090`**.
 

@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
             throw new BookNotFoundException("No Book Record was found", HttpStatus.NOT_FOUND.toString());
         }
         List<BookResponseDto> responses = bookPage.getContent().stream()
-                .map(book -> mapper.mapToBookDto(book))
+                .map(mapper::mapToBookResponseDto)
                 .collect(Collectors.toList());
 
         return new ApiResponse.Wrapper<>(
@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponseDto> getBooks() {
-        return bookRepository.findAll().stream().map(mapper::mapToBookDto).toList();
+        return bookRepository.findAll().stream().map(mapper::mapToBookResponseDto).toList();
     }
 
 

@@ -14,8 +14,7 @@ import java.util.List;
 @Table(name = "carts")
 public class Cart extends Base{
 
-
-    @OneToOne
+    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL)
     private User user;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems;

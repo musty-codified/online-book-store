@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     private void validateEmail(String email) {
         if (!AppUtil.isEmailValid(email)) {
             throw new CustomValidationException("Invalid email format {" + email + "}");

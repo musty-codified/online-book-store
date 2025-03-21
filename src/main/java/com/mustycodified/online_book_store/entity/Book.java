@@ -28,9 +28,6 @@ public class Book extends Base {
     private String isbn;
 
     @Column(nullable = false)
-    private Integer quantity;
-
-    @Column(nullable = false)
     private Integer publishedYear;
 
     @Column(nullable = false)

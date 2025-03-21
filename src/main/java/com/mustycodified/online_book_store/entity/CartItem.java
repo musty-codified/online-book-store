@@ -20,6 +20,9 @@ public class CartItem extends Base{
     private Integer quantity;
 
     @ManyToOne
+    private Cart cart;
+
+    @ManyToOne
     private Book book;
 
 }

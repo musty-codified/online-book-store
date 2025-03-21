@@ -73,6 +73,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, NOT_FOUND);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleResourceNotFoundException(ResourceNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, NOT_FOUND);
+    }
+
     @ExceptionHandler(OutOfStockException.class)
     public ResponseEntity<ApiResponse<String>> handleOutOfStockException(OutOfStockException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());

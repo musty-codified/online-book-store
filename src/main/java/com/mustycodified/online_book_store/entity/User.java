@@ -29,6 +29,9 @@ public class User extends Base{
     @Column(nullable = false)
     private String role;
 
-    private BigDecimal walletBalance = BigDecimal.valueOf(500);
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    private Cart cart = new Cart();
 
+    private BigDecimal walletBalance = BigDecimal.valueOf(500);
 }

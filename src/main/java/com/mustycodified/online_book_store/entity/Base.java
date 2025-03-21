@@ -19,8 +19,9 @@ public class Base implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @CreatedDate
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt;

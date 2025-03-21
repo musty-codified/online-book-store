@@ -1,7 +1,6 @@
 package com.mustycodified.online_book_store.dto.response;
 
-
-import com.mustycodified.online_book_store.dto.CartItemsDto;
+import com.mustycodified.online_book_store.dto.OrderItemsDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartResponseDto {
+public class OrderResponseDto {
     private Long userId;
-    private List<CartItemsDto> cartItemsDto;
+    private double grandTotal;
+    private List<OrderItemsDto> orderItemsDto;
 }

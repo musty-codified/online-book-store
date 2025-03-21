@@ -1,5 +1,5 @@
 package com.mustycodified.online_book_store.service;
-import com.mustycodified.online_book_store.dto.response.CartItemsDto;
+import com.mustycodified.online_book_store.dto.CartItemsDto;
 import com.mustycodified.online_book_store.dto.response.CartResponseDto;
 
 

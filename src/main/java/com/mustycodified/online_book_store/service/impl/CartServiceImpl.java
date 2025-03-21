@@ -1,6 +1,6 @@
 package com.mustycodified.online_book_store.service.impl;
 
-import com.mustycodified.online_book_store.dto.response.CartItemsDto;
+import com.mustycodified.online_book_store.dto.CartItemsDto;
 import com.mustycodified.online_book_store.dto.response.CartResponseDto;
 import com.mustycodified.online_book_store.entity.Cart;
 import com.mustycodified.online_book_store.entity.CartItem;
@@ -29,8 +29,8 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponseDto viewCartContent(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(()->new ResourceNotFoundException("Cart Not found", HttpStatus.NOT_FOUND.name()));
-            return mapper.mapToCartDto(cart);
+                .orElseThrow(() -> new ResourceNotFoundException("Cart Not found", HttpStatus.NOT_FOUND.name()));
+        return mapper.mapToCartDto(cart);
 
     }
 
@@ -38,26 +38,24 @@ public class CartServiceImpl implements CartService {
     public CartItemsDto addToCart(Long userId, CartItemsDto cartItemsDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found", HttpStatus.NOT_FOUND.name()));
-      Cart cart = user.getCart();
+        Cart cart = user.getCart();
         CartItem cartItem = mapper.mapToCartItems(cartItemsDto);
         assert cart != null;
-       List<CartItem> items = cart.getCartItems();
+        List<CartItem> items = cart.getCartItems();
         cart.getCartItems().add(cartItem);
         cart.setCartItems(items);
         return mapper.mapToCartItemsDto(cartItemRepository.save(cartItem));
 
-
     }
 
-
     @Override
-    public String clearCart(Long userId){
+    public String clearCart(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new ResourceNotFoundException("Not found", HttpStatus.NOT_FOUND.name()));
+                .orElseThrow(() -> new ResourceNotFoundException("Not found", HttpStatus.NOT_FOUND.name()));
         Cart cart = user.getCart();
         List<CartItem> cartItems = cart.getCartItems();
 
-        for(CartItem item : cartItems){
+        for (CartItem item : cartItems) {
             cartItemRepository.deleteById(item.getId());
         }
 

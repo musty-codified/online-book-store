@@ -46,7 +46,6 @@ public class DummyData implements CommandLineRunner {
                 .author(faker.book().author())
                 .genre(faker.book().genre())
                 .publishedYear(generateRandomYear())
-                .price(generateRandomPrice())
                 .build();
     }
 

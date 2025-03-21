@@ -30,7 +30,4 @@ public class Book extends Base {
     @Column(nullable = false)
     private Integer publishedYear;
 
-    @Column(nullable = false)
-    private BigDecimal price;
-
 }

@@ -6,7 +6,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 
-
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
@@ -18,6 +17,9 @@ public class CartItem extends Base{
 
     @Column(nullable = false)
     private Integer quantity;
+
+    @Column(nullable = false)
+    private Double price;
 
     @ManyToOne
     private Cart cart;

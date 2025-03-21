@@ -18,13 +18,16 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends Base{
 
+    @Column(nullable = false)
+    private Double grandTotal;
+
     @ManyToOne
     private User user;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
     @Column(nullable = false)

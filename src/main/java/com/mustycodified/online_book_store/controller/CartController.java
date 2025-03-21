@@ -1,7 +1,7 @@
 package com.mustycodified.online_book_store.controller;
 
 import com.mustycodified.online_book_store.dto.response.ApiResponse;
-import com.mustycodified.online_book_store.dto.response.CartItemsDto;
+import com.mustycodified.online_book_store.dto.CartItemsDto;
 import com.mustycodified.online_book_store.dto.response.CartResponseDto;
 import com.mustycodified.online_book_store.service.CartService;
 import jakarta.validation.Valid;

@@ -1,13 +1,12 @@
 package com.mustycodified.online_book_store.util;
 
+import com.mustycodified.online_book_store.dto.OrderItemsDto;
 import com.mustycodified.online_book_store.dto.response.BookResponseDto;
-import com.mustycodified.online_book_store.dto.response.CartItemsDto;
+import com.mustycodified.online_book_store.dto.CartItemsDto;
 import com.mustycodified.online_book_store.dto.response.CartResponseDto;
+import com.mustycodified.online_book_store.dto.response.OrderResponseDto;
 import com.mustycodified.online_book_store.dto.response.UserResponseDto;
-import com.mustycodified.online_book_store.entity.Book;
-import com.mustycodified.online_book_store.entity.Cart;
-import com.mustycodified.online_book_store.entity.CartItem;
-import com.mustycodified.online_book_store.entity.User;
+import com.mustycodified.online_book_store.entity.*;
 
 import com.mustycodified.online_book_store.exception.ResourceNotFoundException;
 import com.mustycodified.online_book_store.repository.BookRepository;
@@ -60,6 +59,7 @@ public class CustomMapper {
         return CartItemsDto.builder()
                 .bookId(cartItem.getBook().getId())
                 .quantity(cartItem.getQuantity())
+                .price(cartItem.getPrice())
                 .build();
     }
 
@@ -68,9 +68,28 @@ public class CustomMapper {
               .orElseThrow(()-> new ResourceNotFoundException("Book not found", HttpStatus.NOT_FOUND.name()));
         return CartItem.builder()
                 .book(book)
+                .price(cartItemsDto.getPrice())
                 .quantity(cartItemsDto.getQuantity())
                 .build();
     }
 
 
+    public OrderResponseDto mapToOrderResponseDto(Order order) {
+        List<OrderItem> orderItems = order.getOrderItems();
+        List<OrderItemsDto> orderItemsDto = orderItems.stream().map(this::mapToOrderItemsDto).toList();
+        return OrderResponseDto.builder()
+                .grandTotal(order.getGrandTotal())
+                .userId(order.getUser().getId())
+                .orderItemsDto(orderItemsDto)
+                .build();
+    }
+
+    private OrderItemsDto mapToOrderItemsDto(OrderItem orderItem){
+        return OrderItemsDto.builder()
+                .orderId(orderItem.getOrder().getId())
+                .bookId(orderItem.getBook().getId())
+                .quantity(orderItem.getQuantity())
+                .unitPrice(orderItem.getUnitPrice())
+                .build();
+    }
 }

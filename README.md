@@ -6,8 +6,8 @@ An online Book Store API developed with **Spring boot** and secured using **JWT-
 
 - **Java 17** 
 - **Spring Boot 3.4.3** 
-- **H2 Database - ** (Embedded, no separate installation needed)
-- **JWT - ** Authentication Mechanism
+- **H2 Database** - (Embedded, no separate installation needed)
+- **JWT** - Authentication Mechanism
 
 
 ## 2. Project Structure ##

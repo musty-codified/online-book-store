@@ -1,6 +1,6 @@
 # Online Book Store
 
-An online bookstore API built with **Spring boot** and secured using **JWT-based authentication**. The API featuring book browsing, shopping cart, checkout, and user authentication. 
+An online bookstore API built with **Spring boot** featuring book browsing, shopping cart, checkout, and user authentication. 
 The system also simulates payment processing and supports role-based access control.
 
 ## 1. Tech Stack ##

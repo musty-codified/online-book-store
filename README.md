@@ -1,24 +1,20 @@
 # Online Book Store
 
-An online bookstore API built with **Spring boot** featuring book browsing, shopping cart, checkout, and user authentication. 
+An online bookstore API built with **Spring boot** featuring book browsing, shopping cart, checkout, and user
+authentication.
 The system also simulates payment processing and supports role-based access control.
 
 ## 1. Tech Stack ##
 
-- **Java 17+(LTS)** 
-- **Spring Boot 3.x.x** 
-- **H2 Database** - (Embedded, no separate installation needed)
-- **Spring Security with JWT** 
-- **JUnit 5 + Mockito** - (unit testing)
+- **Java 17+(LTS)**
+- **Spring Boot 3.x.x**
+- **H2 Database** (Embedded, no separate installation needed)
+- **Spring Security with JWT**
+- **JUnit 5 + Mockito** (unit testing)
 - **Maven** (build tool)
-
+- **Git**
 
 ## 2. Local Setup & Installation ##
-- **Ensure you have the following installed**:
-
-* **Java 17+**
-* **Maven 3.8+**
-* **Git**
 
 - **Clone and build:**
 
@@ -26,11 +22,11 @@ The system also simulates payment processing and supports role-based access cont
 
   `mvn clean install`
 
-- **Configure environment:**  Configure `application-dev.yml` with your H2 Database configurations.
+- **Configure environment:**  Configure `application-dev.yml` with your custom configurations
 
 - **Run the Application:** `mvn spring-boot:run`
 
-- **The Application will start on:** `http://localhost:8090`.
+- **The Application will start on:** `http://localhost:8090`
 
 ---
 
@@ -45,7 +41,8 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ### 3.2 Book Management APIs ###
 
-- (GET) [Search or list books](http://localhost:8090/api/v1/books) `/api/v1/books?pageNumber=1&pageSize=2&searchText=Hitchhiker`
+- (GET) [Search or list books](http://localhost:8090/api/v1/books)
+  `/api/v1/books?pageNumber=1&pageSize=2&searchText=Hitchhiker`
 
 ### 3.3 Cart Management APIs ###
 
@@ -56,7 +53,8 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 ### 3.4 Order Management APIs ###
 
 - (POST) [Checkout using payment method](http://localhost:8090/api/v1/orders/checkout) `/api/v1/orders/checkout`
-- (GET) [View order history](http://localhost:8090/api/v1/orders/{userId}/history) `/api/v1/orders/1/history?pageNumber=1&pageSize=2`
+- (GET) [View order history](http://localhost:8090/api/v1/orders/{userId}/history)
+  `/api/v1/orders/1/history?pageNumber=1&pageSize=2`
 
 ### 3.5 API Authentication ###
 
@@ -65,23 +63,70 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
   ```sh
   Authorization: Bearer <your-token-here>
   ```
+
 ---
 
 ## 4. Running Unit Tests ##
 
 - **To run unit tests:** `mvn test`
-- **The test suite uses JUnit 5 and Mockito:**
-- **Services tested include: UserService, CartService, OrderService, and BookService** 
+- **The test suite uses JUnit 5 and Mockito**
+- **Services tested include: UserService, CartService, OrderService, and BookService**
 
-
-## 4. Database Access ##
+## 5. Database Access ##
 
 Access H2 console at:
 
 - **URL:** `http://localhost:8090/api/v1/h2-console`
 - **JDBC URL:** `jdbc:h2:mem:book_store_db`
 - **Username:** `sa`
-- **Password:** ``
+- **Password:** `<your password>`
+
+## 6. Sample Request & Response Payloads ##
+
+### Add to Cart
+
+```
+
+  {
+    "bookId": 2,
+    "quantity": 3
+  }
+```
+
+### Checkout Order
+
+```
+  {
+    "userId": 1,
+    "paymentMethod": "TRANSFER"
+  }
+```
+
+```
+  {
+    "success": true,
+    "message": "Request successfully processed",
+    "timestamp": "2025-03-22T11:32:04+0000",
+    "data": {
+        "userId": 1,
+        "grandTotal": 147.0,
+        "orderStatus": "PENDING",
+        "orderItemsDto": [
+            {
+                "bookId": 3,
+                "orderId": 1,
+                "quantity": 3,
+                "unitPrice": 39.0
+            },
+            {
+                "bookId": 7,
+                "orderId": 1,
+                "quantity": 1,
+                "unitPrice": 30.0
+            }
+        ]
+    }
+```
 
 
 

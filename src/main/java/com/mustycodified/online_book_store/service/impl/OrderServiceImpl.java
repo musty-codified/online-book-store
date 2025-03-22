@@ -1,19 +1,13 @@
 package com.mustycodified.online_book_store.service.impl;
 
-import com.mustycodified.online_book_store.dto.OrderItemsDto;
 import com.mustycodified.online_book_store.dto.request.OrderRequestDto;
 import com.mustycodified.online_book_store.dto.response.ApiResponse;
-import com.mustycodified.online_book_store.dto.response.BookResponseDto;
 import com.mustycodified.online_book_store.dto.response.OrderResponseDto;
 import com.mustycodified.online_book_store.entity.*;
 import com.mustycodified.online_book_store.enums.OrderStatus;
-import com.mustycodified.online_book_store.enums.PaymentMethod;
-import com.mustycodified.online_book_store.exception.BookNotFoundException;
-import com.mustycodified.online_book_store.exception.CustomValidationException;
 import com.mustycodified.online_book_store.exception.ResourceNotFoundException;
 import com.mustycodified.online_book_store.repository.CartRepository;
 import com.mustycodified.online_book_store.repository.OrderRepository;
-import com.mustycodified.online_book_store.repository.UserRepository;
 import com.mustycodified.online_book_store.service.CartService;
 import com.mustycodified.online_book_store.service.OrderService;
 import com.mustycodified.online_book_store.util.CustomMapper;
@@ -34,10 +28,8 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
     private final CartService cartService;
     private final CustomMapper mapper;
-
     private final PaymentService paymentService;
 
     @Override

@@ -23,7 +23,7 @@ public class PaymentService {
     @Async
     public void processPayment(Order order) {
         try {
-            log.info("processing payment asynchronously for order:{}, Task thread:{}", order.getId(), Thread.currentThread().getName());
+            log.info("processing payment asynchronously for order:{}, ThreadName:{}", order.getId(), Thread.currentThread().getName());
             Thread.sleep(5000); // Simulate payment delay
 
             User user = userRepository.findById(order.getUser().getId()).orElseThrow();

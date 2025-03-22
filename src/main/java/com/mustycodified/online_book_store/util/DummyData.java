@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +28,9 @@ import static com.mustycodified.online_book_store.enums.Roles.ADMIN;
 public class DummyData implements CommandLineRunner {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final AppUtil appUtil;
+//    private final AppUtil appUtil;
     private final Faker faker;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public void run(String... args) throws Exception {
         IntStream.rangeClosed(1, 10).forEach(i->{
@@ -59,7 +61,7 @@ public class DummyData implements CommandLineRunner {
             User admin = new User();
             admin.setUpdatedAt(LocalDateTime.now());
             admin.setCreatedAt(LocalDateTime.now());
-            admin.setPassword(("0bv20S!ecQgd"));
+            admin.setPassword(passwordEncoder.encode("0bv20S!ecQgd"));
             admin.setEmail("musty@gmail.com");
             admin.setRole(ADMIN.getPermissions().stream().map(Objects::toString).collect(Collectors.joining(",")));
             admin.setFirstName("Papi");

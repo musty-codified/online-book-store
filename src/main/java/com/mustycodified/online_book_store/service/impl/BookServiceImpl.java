@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
         Page<Book> bookPage = bookRepository.fetchAllBooks(searchText != null && !searchText.isEmpty() ? searchText : null, pageable);
 
         if (bookPage.isEmpty()) {
-            throw new BookNotFoundException("No Book Record was found", HttpStatus.NOT_FOUND.toString());
+            throw new BookNotFoundException("No Book Record was Found", HttpStatus.NOT_FOUND.toString());
         }
         List<BookResponseDto> responses = bookPage.getContent().stream()
                 .map(mapper::mapToBookResponseDto)

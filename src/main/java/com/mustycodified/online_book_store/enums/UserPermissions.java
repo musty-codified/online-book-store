@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum UserPermissions {
     USER_READ("user.read"),
-    USER_EDIT("user.edit"),
+    USER_EDIT("user.write"),
     USER_DELETE("user.delete");
 
     private final String permission;

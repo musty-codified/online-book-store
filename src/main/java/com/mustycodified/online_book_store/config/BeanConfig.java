@@ -5,6 +5,7 @@ import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
@@ -21,6 +22,11 @@ public class BeanConfig {
     @Bean
     public ObjectMapper mapper(){
         return new ObjectMapper();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean(name = "asyncTaskExecutor")

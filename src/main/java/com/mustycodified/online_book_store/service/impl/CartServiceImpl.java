@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
@@ -36,7 +35,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartItemsDto addToCart(Long userId, CartItemsDto cartItemsDto) {
+    public CartItemsDto addItemToCart(Long userId, CartItemsDto cartItemsDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
         Cart cart = user.getCart();

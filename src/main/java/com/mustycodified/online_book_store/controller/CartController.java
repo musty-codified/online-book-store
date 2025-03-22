@@ -26,7 +26,7 @@ public class CartController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<ApiResponse<CartItemsDto>> addItemToCart(@PathVariable (value = "userId") Long userId, @Valid @RequestBody CartItemsDto cartItemsDto) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Request successfully processed", cartService.addToCart(userId, cartItemsDto)));
+        return ResponseEntity.ok(new ApiResponse<>(true, "Request successfully processed", cartService.addItemToCart(userId, cartItemsDto)));
     }
 
     @DeleteMapping("/{userId}")

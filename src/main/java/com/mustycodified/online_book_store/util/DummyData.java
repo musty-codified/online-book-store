@@ -36,7 +36,7 @@ public class DummyData implements CommandLineRunner {
             Book book = createBook();
             bookRepository.save(book);
         });
-        System.out.println("Seeding 10 dummy book data");
+        System.out.println("preloading database with 10 books inventory data");
     }
 
 

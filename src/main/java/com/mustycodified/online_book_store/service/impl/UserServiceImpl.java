@@ -1,5 +1,6 @@
 package com.mustycodified.online_book_store.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mustycodified.online_book_store.config.CustomUserDetailsService;
 import com.mustycodified.online_book_store.config.JwtUtils;
 import com.mustycodified.online_book_store.dto.request.LoginRequestDto;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final CustomMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtil;
+    private final ObjectMapper objectMapper;
     private final CustomUserDetailsService userDetailsService;
 
     @Value("${jwt.expiration}")
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
             throw new ResourceAlreadyExistException("User already exists");
         }
 
-       User newUser = appUtil.getMapper().convertValue(requestDto, User.class);
+       User newUser = objectMapper.convertValue(requestDto, User.class);
         newUser.setRole(Roles.USER.getPermissions().stream()
                 .map(Objects::toString).collect(Collectors.joining(",")));
         newUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));

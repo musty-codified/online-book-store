@@ -58,7 +58,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 - (POST) [Checkout using payment method](http://localhost:8090/api/v1/orders/checkout) `/api/v1/orders/checkout/`
 - (GET) [View order history](http://localhost:8090/api/v1/orders/{userId}/history) `/api/v1/orders/1/history?pageNumber=1&pageSize=2`
 
-### 3.5 API Authentication
+### 3.5 API Authentication ###
 
 - Secure endpoints require a **JWT token** for access.
 - Obtain a token via the **User Login API** and pass in the request header:
@@ -66,6 +66,13 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
   Authorization: Bearer <your-token-here>
   ```
 ---
+
+## 4. Running Unit Tests ##
+
+- **To run unit tests:** `mvn test`
+- **The test suite uses JUnit 5 and Mockito:**
+- **Services tested include: UserService, CartService, OrderService, and BookService** 
+
 
 ## 4. Database Access ##
 

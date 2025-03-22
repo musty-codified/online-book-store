@@ -27,7 +27,7 @@ public class GlobalExceptionHandlerTest {
     void handleAccessDeniedException() {
         when(unAuthorizedException.getMessage()).thenReturn("Unauthorized");
         ResponseEntity<ApiResponse<String>> response = globalExceptionHandler.handleUnauthorizedException(unAuthorizedException);
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
     @Test

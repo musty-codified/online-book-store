@@ -67,7 +67,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
   ```
 ---
 
-## 6.1 Database Access ##
+## 4. Database Access ##
 
 Access H2 console at:
 

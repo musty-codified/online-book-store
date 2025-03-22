@@ -55,7 +55,7 @@ class OrderServiceImplTest {
     Long orderId = 1L;
     String paymentMethod = "TRANSFER";
     String orderStatus = "COMPLETED";
-    Order orderEntity;
+    Order order;
 
     @BeforeEach
     void setUp() {
@@ -71,31 +71,31 @@ class OrderServiceImplTest {
         orderRequestDto.setUserId(userId);
         orderRequestDto.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 
-        Book bookEntity1 = new Book();
-        bookEntity1.setTitle("Head First Java");
+        Book book1 = new Book();
+        book1.setTitle("Head First Java");
 
-        Book bookEntity2 = new Book();
-        bookEntity2.setTitle("Java Spring Boot");
+        Book book2 = new Book();
+        book2.setTitle("Java Spring Boot");
 
-        CartItem cartItemEntity1 = new CartItem();
-        cartItemEntity1.setId(1L);
-        cartItemEntity1.setBook(bookEntity1);
-        cartItemEntity1.setPrice(40.0);
-        cartItemEntity1.setQuantity(4);
+        CartItem cartItem1 = new CartItem();
+        cartItem1.setId(1L);
+        cartItem1.setBook(book1);
+        cartItem1.setPrice(40.0);
+        cartItem1.setQuantity(4);
 
-        CartItem cartItemEntity2 = new CartItem();
-        cartItemEntity2.setId(2L);
-        cartItemEntity2.setBook(bookEntity2);
-        cartItemEntity2.setPrice(15.0);
-        cartItemEntity2.setQuantity(3);
+        CartItem cartItem2 = new CartItem();
+        cartItem2.setId(2L);
+        cartItem2.setBook(book2);
+        cartItem2.setPrice(15.0);
+        cartItem2.setQuantity(3);
 
-        User userEntity = new User();
-        userEntity.setId(userId);
+        User user = new User();
+        user.setId(userId);
 
-        Cart cartEntity = new Cart();
-        cartEntity.setId(1L);
-        cartEntity.setUser(userEntity);
-        cartEntity.setCartItems(List.of(cartItemEntity1, cartItemEntity2));
+        Cart cart = new Cart();
+        cart.setId(1L);
+        cart.setUser(user);
+        cart.setCartItems(List.of(cartItem1, cartItem2));
 
         OrderItem orderItem1 = new OrderItem();
         orderItem1.setId(1L);
@@ -103,12 +103,12 @@ class OrderServiceImplTest {
         OrderItem orderItem2 = new OrderItem();
         orderItem2.setId(2L);
 
-        orderEntity = new Order();
-        orderEntity.setId(orderId);
-        orderEntity.setUser(userEntity);
-        orderEntity.setOrderItems(List.of(orderItem1, orderItem2));
-        orderEntity.setOrderStatus(orderStatus);
-        orderEntity.setGrandTotal(205.0);
+        order = new Order();
+        order.setId(orderId);
+        order.setUser(user);
+        order.setOrderItems(List.of(orderItem1, orderItem2));
+        order.setOrderStatus(orderStatus);
+        order.setGrandTotal(205.0);
 
         //Response dto
         orderResponseDto = new OrderResponseDto();
@@ -116,9 +116,9 @@ class OrderServiceImplTest {
         orderResponseDto.setOrderStatus(orderStatus);
 
         // Mocks
-        when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cartEntity));
-        when(orderRepository.save(any(Order.class))).thenReturn(orderEntity);
-        when(mapper.mapToOrderResponseDto(orderEntity)).thenReturn(orderResponseDto);
+        when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cart));
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+        when(mapper.mapToOrderResponseDto(order)).thenReturn(orderResponseDto);
 
         //when
         OrderResponseDto returnValue = orderService.createOrder(orderRequestDto);
@@ -140,13 +140,13 @@ class OrderServiceImplTest {
     @DisplayName("viewPurchaseHistory_ReturnsOrderResponseDtoList")
     final void testViewPurchaseHistory_ReturnsOrderResponseDtoList() {
 
-       Order orderEntity1 = new Order();
-       orderEntity1.setId(1L);
-       orderEntity1.setOrderDate(LocalDateTime.now());
+       Order order1 = new Order();
+       order1.setId(1L);
+       order1.setOrderDate(LocalDateTime.now());
 
-        Order orderEntity2 = new Order();
-        orderEntity2.setId(2L);
-        orderEntity2.setOrderDate(LocalDateTime.now().minusDays(3));
+        Order order2 = new Order();
+        order2.setId(2L);
+        order2.setOrderDate(LocalDateTime.now().minusDays(3));
 
         OrderResponseDto orderResponseDto1 = new OrderResponseDto();
         orderResponseDto1.setOrderStatus(orderStatus);
@@ -155,13 +155,13 @@ class OrderServiceImplTest {
         orderResponseDto2.setOrderStatus(orderStatus);
 
         Pageable pageable = PageRequest.of(0, 5);
-        List<Order> orderList = List.of(orderEntity1, orderEntity2);
+        List<Order> orderList = List.of(order1, order2);
         Page<Order> orderPage = new PageImpl<>(orderList, pageable, orderList.size());
 
         when(orderRepository.fetchAllOrders(anyLong(), eq(pageable))).thenReturn(orderPage);
 
-        when(mapper.mapToOrderResponseDto(orderEntity1)).thenReturn(orderResponseDto1);
-        when(mapper.mapToOrderResponseDto(orderEntity2)).thenReturn(orderResponseDto2);
+        when(mapper.mapToOrderResponseDto(order1)).thenReturn(orderResponseDto1);
+        when(mapper.mapToOrderResponseDto(order2)).thenReturn(orderResponseDto2);
 
         ApiResponse.Wrapper<List<OrderResponseDto>> returnValue = orderService.viewPurchaseHistory(userId, pageable);
         OrderResponseDto responseDto = returnValue.getContent().get(0);
@@ -171,10 +171,10 @@ class OrderServiceImplTest {
         assertEquals(2, returnValue.getTotalItems());
         assertEquals("COMPLETED", returnValue.getContent().get(0).getOrderStatus());
         verify(orderRepository).fetchAllOrders(anyLong(), eq(pageable));
-        verify(orderRepository, times(0)).save(orderEntity1);
-        verify(orderRepository, times(0)).save(orderEntity2);
-        verify(mapper, times(1)).mapToOrderResponseDto(orderEntity1);
-        verify(mapper, times(1)).mapToOrderResponseDto(orderEntity2);
+        verify(orderRepository, times(0)).save(order1);
+        verify(orderRepository, times(0)).save(order2);
+        verify(mapper, times(1)).mapToOrderResponseDto(order1);
+        verify(mapper, times(1)).mapToOrderResponseDto(order2);
 
     }
 

@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +39,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     UserRequestDto userRequestDto;
-    User userEntity;
+    User user;
     UserResponseDto userResponseDto;
     String email = "Johnuser@gmail.com";
     String firstName = "John";
@@ -59,13 +58,13 @@ class UserServiceImplTest {
     void testCreateNewUser_ReturnsCreatedUser() {
 
         userRequestDto = createUserRequestDto();
-        userEntity = createUser();
+        user = createUser();
         userResponseDto = createUserResponseDto();
 
         when(userRepository.existsByEmail(userRequestDto.getEmail())).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenReturn(userEntity);
+        when(userRepository.save(any(User.class))).thenReturn(user);
         when(passwordEncoder.encode(userRequestDto.getPassword())).thenReturn(encodedPassword);
-        when(objectMapper.convertValue(userRequestDto, User.class)).thenReturn(userEntity);
+        when(objectMapper.convertValue(userRequestDto, User.class)).thenReturn(user);
         when(mapper.mapToUserDto(any(User.class))).thenReturn(userResponseDto);
 
         UserResponseDto returnValue = userService.createUser(userRequestDto);
@@ -73,8 +72,8 @@ class UserServiceImplTest {
         assertNotNull(returnValue);
         assertEquals(userRequestDto.getEmail(), returnValue.getEmail());
         verify(userRepository).existsByEmail(userRequestDto.getEmail());
-        verify(userRepository, times(1)).save(userEntity);
-        verify(mapper, times(1)).mapToUserDto(userEntity);
+        verify(userRepository, times(1)).save(user);
+        verify(mapper, times(1)).mapToUserDto(user);
         verify(appUtil, times(1)).validateEmailDomain(email);
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -110,16 +109,16 @@ class UserServiceImplTest {
     }
 
     private User createUser(){
-        userEntity = new User();
-        userEntity.setId(1L);
-        userEntity.setFirstName(firstName);
-        userEntity.setLastName(lastName);
-        userEntity.setEmail(email);
-        userEntity.setPassword(encodedPassword);
-        userEntity.setRole(role);
-        userEntity.setCreatedAt(date());
-        userEntity.setUpdatedAt(date());
-        return userEntity;
+        user = new User();
+        user.setId(1L);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(encodedPassword);
+        user.setRole(role);
+        user.setCreatedAt(date());
+        user.setUpdatedAt(date());
+        return user;
     }
 
     private UserResponseDto createUserResponseDto(){

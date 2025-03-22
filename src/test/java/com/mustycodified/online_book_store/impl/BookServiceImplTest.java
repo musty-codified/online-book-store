@@ -34,10 +34,10 @@ class BookServiceImplTest {
     @InjectMocks
     private BookServiceImpl bookService;
 
-    Book bookEntity1;
-    Book bookEntity2;
-    BookResponseDto bookResponseDto1;
-    BookResponseDto bookResponseDto2;
+    Book book1;
+    Book book2;
+    BookResponseDto bookDto1;
+    BookResponseDto bookDto2;
     String searchText = "Java";
 
     @BeforeEach
@@ -49,32 +49,32 @@ class BookServiceImplTest {
     @DisplayName("getAllBooks_ReturnsPaginatedBooks")
     final void getAllBooks_ReturnsPaginatedBookList(){
 
-        bookEntity1 = new Book();
-        bookEntity1.setIsbn("1023-1234567");
-        bookEntity1.setTitle("Head First Java");
+        book1 = new Book();
+        book1.setIsbn("1023-1234567");
+        book1.setTitle("Head First Java");
 
-        bookEntity2 = new Book();
-        bookEntity2.setIsbn("1234-1234567");
-        bookEntity2.setTitle("Java Spring Boot");
+        book2 = new Book();
+        book2.setIsbn("1234-1234567");
+        book2.setTitle("Java Spring Boot");
 
-        bookResponseDto1 = new BookResponseDto();
-        bookResponseDto1.setId(1L);
-        bookResponseDto1.setIsbn(bookEntity1.getTitle());
-        bookResponseDto1.setTitle(bookEntity1.getTitle());
+        bookDto1 = new BookResponseDto();
+        bookDto1.setId(1L);
+        bookDto1.setIsbn(book1.getTitle());
+        bookDto1.setTitle(book1.getTitle());
 
-        bookResponseDto2 = new BookResponseDto();
-        bookResponseDto2.setId(2L);
-        bookResponseDto2.setIsbn(bookEntity2.getIsbn());
-        bookResponseDto2.setTitle(bookEntity2.getTitle());
+        bookDto2 = new BookResponseDto();
+        bookDto2.setId(2L);
+        bookDto2.setIsbn(book2.getIsbn());
+        bookDto2.setTitle(book2.getTitle());
 
         Pageable pageable = PageRequest.of(0, 5);
-        List<Book> bookList = List.of(bookEntity1, bookEntity2);
+        List<Book> bookList = List.of(book1, book2);
         Page<Book> bookPage = new PageImpl<>(bookList, pageable, bookList.size());
 
         when(bookRepository.fetchAllBooks(anyString(), eq(pageable))).thenReturn(bookPage);
 
-        when(mapper.mapToBookResponseDto(bookEntity1)).thenReturn(bookResponseDto1);
-        when(mapper.mapToBookResponseDto(bookEntity2)).thenReturn(bookResponseDto2);
+        when(mapper.mapToBookResponseDto(book1)).thenReturn(bookDto1);
+        when(mapper.mapToBookResponseDto(book2)).thenReturn(bookDto2);
 
         ApiResponse.Wrapper<List<BookResponseDto>> returnValue = bookService.getAllBooks(searchText, pageable);
        BookResponseDto responseDto = returnValue.getContent().get(0);
@@ -84,10 +84,10 @@ class BookServiceImplTest {
         assertEquals(2, returnValue.getTotalItems());
         assertEquals("Head First Java", returnValue.getContent().get(0).getTitle());
         verify(bookRepository).fetchAllBooks(eq(searchText), eq(pageable));
-        verify(bookRepository, times(0)).save(bookEntity1);
-        verify(bookRepository, times(0)).save(bookEntity2);
-        verify(mapper, times(1)).mapToBookResponseDto(bookEntity1);
-        verify(mapper, times(1)).mapToBookResponseDto(bookEntity2);
+        verify(bookRepository, times(0)).save(book1);
+        verify(bookRepository, times(0)).save(book2);
+        verify(mapper, times(1)).mapToBookResponseDto(book1);
+        verify(mapper, times(1)).mapToBookResponseDto(book2);
 
     }
 

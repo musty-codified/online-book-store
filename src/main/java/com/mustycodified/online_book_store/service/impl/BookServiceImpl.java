@@ -3,7 +3,7 @@ package com.mustycodified.online_book_store.service.impl;
 import com.mustycodified.online_book_store.dto.response.ApiResponse;
 import com.mustycodified.online_book_store.dto.response.BookResponseDto;
 import com.mustycodified.online_book_store.entity.Book;
-import com.mustycodified.online_book_store.exception.BookNotFoundException;
+import com.mustycodified.online_book_store.exception.ResourceNotFoundException;
 import com.mustycodified.online_book_store.repository.BookRepository;
 import com.mustycodified.online_book_store.service.BookService;
 import com.mustycodified.online_book_store.util.CustomMapper;
@@ -27,7 +27,7 @@ public class BookServiceImpl implements BookService {
         Page<Book> bookPage = bookRepository.fetchAllBooks(searchText != null && !searchText.isEmpty() ? searchText : null, pageable);
 
         if (bookPage.isEmpty()) {
-            throw new BookNotFoundException("No Book Record was Found", HttpStatus.NOT_FOUND.toString());
+            throw new ResourceNotFoundException("No Book Record was Found", HttpStatus.NOT_FOUND.toString());
         }
         List<BookResponseDto> responses = bookPage.getContent().stream()
                 .map(mapper::mapToBookResponseDto)

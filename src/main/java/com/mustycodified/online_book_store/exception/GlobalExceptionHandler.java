@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
             errors.put(propertyPath, message);
 
         });
-        return new ResponseEntity<>(new ApiResponse<>(false, "Input not Valid", errors), BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponse<>(false, "InValid input", errors), BAD_REQUEST);
     }
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ApiResponse<Map<String, String>>> handleRequestPathVariableException(MethodArgumentTypeMismatchException ex) {
@@ -65,12 +65,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<String>> handleResourceAlreadyExistException(ResourceAlreadyExistException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, e.getStatus());
-    }
-
-    @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<ApiResponse<String>> handleBookNotFoundException(BookNotFoundException e) {
-        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
-        return new ResponseEntity<>(errorResponse, NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

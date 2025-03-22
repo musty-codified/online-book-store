@@ -37,7 +37,7 @@ class CartServiceImplTest {
     @InjectMocks
     private CartServiceImpl cartService;
 
-    Cart cartEntity;
+    Cart cart;
     List<CartItem> cartItemList = new ArrayList<>();
 
     CartItemsDto cartItemsDto;
@@ -67,12 +67,12 @@ class CartServiceImplTest {
         cartItemsDto.setBookId(1L);
         cartItemsDto.setQuantity(5);
 
-        cartEntity = new Cart();
-        cartEntity.setCartItems(cartItemList);
+        cart = new Cart();
+        cart.setCartItems(cartItemList);
 
         User userEntity = new User();
         userEntity.setId(userId);
-        userEntity.setCart(cartEntity);
+        userEntity.setCart(cart);
 
         // Mocks
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
@@ -102,16 +102,16 @@ class CartServiceImplTest {
         cartResponseDto.setUserId(userId);
         cartResponseDto.setCartItemsDto(new ArrayList<>());
 
-        cartEntity = new Cart();
-        cartEntity.setCartItems(cartItemList);
+        cart = new Cart();
+        cart.setCartItems(cartItemList);
 
         User userEntity = new User();
         userEntity.setId(userId);
-        userEntity.setCart(cartEntity);
+        userEntity.setCart(cart);
 
         // Mocks
-        when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cartEntity));
-        when(mapper.mapToCartDto(cartEntity)).thenReturn(cartResponseDto);
+        when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cart));
+        when(mapper.mapToCartDto(cart)).thenReturn(cartResponseDto);
 
         //when
         CartResponseDto returnValue = cartService.viewCartContent(userId);
@@ -120,7 +120,7 @@ class CartServiceImplTest {
         assertNotNull(returnValue);
         assertEquals(cartResponseDto.getUserId(), returnValue.getUserId());
         verify(cartRepository).findByUserId(userId);
-        verify(mapper).mapToCartDto(cartEntity);
+        verify(mapper).mapToCartDto(cart);
 
     }
 
@@ -139,16 +139,16 @@ class CartServiceImplTest {
         cartItemList.add(cartItem1);
         cartItemList.add(cartItem2);
 
-        cartEntity = new Cart();
-        cartEntity.setCartItems(cartItemList);
+        cart = new Cart();
+        cart.setCartItems(cartItemList);
 
         User userEntity = new User();
         userEntity.setId(userId);
-        userEntity.setCart(cartEntity);
+        userEntity.setCart(cart);
 
         // Mocks
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-        when(cartRepository.save(cartEntity)).thenReturn(cartEntity);
+        when(cartRepository.save(cart)).thenReturn(cart);
 
         // When
         String returnValue = cartService.clearCart(userId);
@@ -157,8 +157,8 @@ class CartServiceImplTest {
         assertEquals(message, returnValue);
         verify(cartItemRepository).deleteById(1L);
         verify(cartItemRepository).deleteById(2L);
-        verify(cartRepository).save(cartEntity);
-        assertTrue(cartEntity.getCartItems().isEmpty());
+        verify(cartRepository).save(cart);
+        assertTrue(cart.getCartItems().isEmpty());
 
     }
 

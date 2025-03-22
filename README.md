@@ -81,7 +81,7 @@ Access H2 console at:
 - **Username:** `sa`
 - **Password:** `<your password>`
 
-## 6. Checkout Order Sample Payloads ##
+## 6. Order Checkout Sample Payloads ##
 
 ### Request
 

@@ -16,15 +16,17 @@ The system also simulates payment processing and supports role-based access cont
 ## 2. Local Setup & Installation ##
 - **Ensure you have the following installed**:
 
-- **Java 17+**
-- **Maven 3.8+**
-- **Git**
+- Java 17+
+- Maven 3.8+
+- Git
 
 - **Clone and build:**
+
   `git clone https://github.com/musty-codified/online-book-store.git`
+
   `mvn clean install`
 
-- **Configure environment:** Configure `application-dev.yml` with your H2 Database configurations.
+- **Configure environment:**  Configure `application-dev.yml` with your H2 Database configurations.
 
 - **Run the Application:** `mvn spring-boot:run`
 
@@ -47,7 +49,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ### 3.3 Cart Management APIs ###
 
-- (POST) [Add item to cart](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1/`
+- (POST) [Add item to cart](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1`
 - (GET) [View cart contents](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1`
 - (DELETE) [Clear cart contents](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1`
 

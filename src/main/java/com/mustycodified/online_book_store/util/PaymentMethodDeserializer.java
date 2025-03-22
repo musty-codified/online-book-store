@@ -12,7 +12,7 @@ public class PaymentMethodDeserializer extends JsonDeserializer<PaymentMethod> {
     @Override
     public PaymentMethod deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         String code = jsonParser.getText();
-        return PaymentMethod.fromCode(code);
+        return PaymentMethod.fromPaymentMethod(code);
 
     }
 }

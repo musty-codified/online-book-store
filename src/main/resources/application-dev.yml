@@ -29,9 +29,11 @@ access-control-list:
     - permission: "user.read"
       methods: ["GET"]
       patterns: ["/books/**", "/carts/**", "/orders/**"]
+
     - permission: "user.write"
       methods: ["POST", "PUT"]
       patterns: ["/carts/**", "/orders/**"]
+
     - permission: "user.delete"
       methods: [ "DELETE"]
       patterns: ["/carts/**"]

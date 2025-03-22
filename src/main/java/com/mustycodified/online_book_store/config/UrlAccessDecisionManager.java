@@ -60,7 +60,6 @@ public class UrlAccessDecisionManager implements AuthorizationManager<RequestAut
     }
 
     private boolean matchesPermission(String permission, String requestedUrl, String requestMethod) {
-        System.out.println(permission);
         return permissionConfig.getPermissions().stream()
                 .filter(e -> e.getPermission().equals(permission))
                 .anyMatch(mapping -> mapping.getMethods().contains(requestMethod) &&

@@ -16,9 +16,9 @@ The system also simulates payment processing and supports role-based access cont
 ## 2. Local Setup & Installation ##
 - **Ensure you have the following installed**:
 
-- Java 17+
-- Maven 3.8+
-- Git
+* **Java 17+**
+* **Maven 3.8+**
+* **Git**
 
 - **Clone and build:**
 
@@ -55,7 +55,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ### 3.4 Order Management APIs ###
 
-- (POST) [Checkout using payment method](http://localhost:8090/api/v1/orders/checkout) `/api/v1/orders/checkout/`
+- (POST) [Checkout using payment method](http://localhost:8090/api/v1/orders/checkout) `/api/v1/orders/checkout`
 - (GET) [View order history](http://localhost:8090/api/v1/orders/{userId}/history) `/api/v1/orders/1/history?pageNumber=1&pageSize=2`
 
 ### 3.5 API Authentication ###

@@ -82,18 +82,9 @@ Access H2 console at:
 - **Password:** `<your password>`
 
 ## 6. Sample Request & Response Payloads ##
-
-### Add to Cart
-
-```
-
-  {
-    "bookId": 2,
-    "quantity": 3
-  }
-```
-
 ### Checkout Order
+
+### Request
 
 ```
   {
@@ -101,6 +92,7 @@ Access H2 console at:
     "paymentMethod": "TRANSFER"
   }
 ```
+### Response
 
 ```
   {

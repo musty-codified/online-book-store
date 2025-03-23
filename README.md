@@ -68,12 +68,70 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ## 4. Running Unit Tests ##
 
+Unit testing covers key functionalities.
 - **To run unit tests:** `mvn test`
 - **The test suite uses JUnit 5 and Mockito**
 - **Services tested include: UserService, CartService, OrderService, and BookService**
 
-## 5. Database Access ##
+### 5. application.yml Configuration ##
+Authorization is abstracted via configurable permissions in application.yml:
+This configuration is automatically mapped using the Spring @ConfigurationProperties setup in the `PermissionConfig` class present under the `config` package:
+```
+access-control-list:
+  permissions:
+    - permission: "user.read"
+      methods: ["GET"]
+      patterns: ["/books/**", "/carts/**", "/orders/**"]
 
+    - permission: "user.write"
+      methods: ["POST", "PUT"]
+      patterns: ["/carts/**", "/orders/**"]
+
+    - permission: "user.delete"
+      methods: [ "DELETE"]
+      patterns: ["/carts/**"]
+
+```
+Below is a full sample of the application.yml:
+```
+spring:
+  datasource:
+    url: jdbc:h2:mem:book_store_db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8090    
+
+jwt:
+  secret: ${JWT_SECRET:eab7efd5799142acb5f308ba2e54cdfa589bfc369f8c9a7bfe53ddab4f5421ce}
+  expiration: 3600 # 1 hour
+
+access-control-list:
+  permissions:
+    - permission: "user.read"
+      methods: ["GET"]
+      patterns: ["/books/**", "/carts/**", "/orders/**"]
+
+    - permission: "user.write"
+      methods: ["POST", "PUT"]
+      patterns: ["/carts/**", "/orders/**"]
+
+    - permission: "user.delete"
+      methods: [ "DELETE"]
+      patterns: ["/carts/**"]
+
+```
 Access H2 console at:
 
 - **URL:** `http://localhost:8090/api/v1/h2-console`

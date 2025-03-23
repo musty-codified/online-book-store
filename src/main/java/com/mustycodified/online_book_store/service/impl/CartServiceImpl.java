@@ -40,7 +40,6 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
         Cart cart = user.getCart();
         CartItem cartItem = mapper.mapToCartItems(cartItemsDto);
-        if (cartItem.getQuantity().compareTo(cartItemsDto.getQuantity())<0){}
         assert cart != null;
         List<CartItem> items = cart.getCartItems();
         cart.getCartItems().add(cartItem);

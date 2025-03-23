@@ -68,7 +68,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ## 4. Running Unit Tests ##
 
-Unit tests covers key functionalities.
+Unittests covers key functionalities.
 - **To run unit tests:** `mvn test`
 - **The test suite uses JUnit 5 and Mockito**
 - **Services tested include: UserService, CartService, OrderService, and BookService**

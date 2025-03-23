@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             throw new ResourceAlreadyExistException("User already exists");
         }
 
-       User newUser = objectMapper.convertValue(requestDto, User.class);
+        User newUser = objectMapper.convertValue(requestDto, User.class);
         newUser.setRole(Roles.USER.getPermissions().stream()
                 .map(Objects::toString).collect(Collectors.joining(",")));
         newUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
             }
 
             User user = userOptional.get();
-            if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())){
+            if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
                 log.error("Bad credentials with email {}", loginRequestDto.getEmail());
                 throw new BadCredentialsException("Invalid credentials");
             }
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
                     .expiresIn(jwtExpiration)
                     .build();
 
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new BadCredentialsException("Incorrect credentials");
 
         }

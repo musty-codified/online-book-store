@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,14 +40,16 @@ public class DummyData implements CommandLineRunner {
         System.out.println("preloading database with 10 books inventory data");
     }
 
-
     private Book createBook() {
+        String rawIsbn = faker.code().isbn13();
+        String[] genres = {"Fiction", "Thriller", "Mystery", "Poetry", "Horror", "Satire"};
+
         return Book.builder()
                 .title(faker.book().title())
-                .isbn(faker.number().digits(13))
+                .isbn(rawIsbn.replaceAll("[^0-9-]", ""))
                 .author(faker.book().author())
-                .genre(faker.book().genre())
-                .publishedYear(faker.number().numberBetween(2015, 2025))
+                .genre(genres[faker.number().numberBetween(0, genres.length)])
+                .publishedYear(faker.number().numberBetween(1995, LocalDate.now().getYear()))
                 .build();
     }
 

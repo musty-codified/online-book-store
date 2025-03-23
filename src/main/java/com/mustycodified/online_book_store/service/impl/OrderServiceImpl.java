@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = cartItems.stream()
                 .map(cartItem -> new OrderItem(cartItem.getBook(), order, cartItem.getQuantity(), cartItem.getPrice())).toList();
         order.setOrderItems(orderItems);
-       Order savedOrder = orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
         cartService.clearCart(orderRequestDto.getUserId());
 
         paymentService.processPayment(savedOrder);

@@ -10,6 +10,5 @@ public interface UserService {
     UserResponseDto createUser(UserRequestDto requestDto);
     LoginResponseDto login (LoginRequestDto loginRequestDto, HttpServletRequest request);
 
-
 }
 

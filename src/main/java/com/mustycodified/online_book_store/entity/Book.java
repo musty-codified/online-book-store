@@ -1,6 +1,7 @@
 package com.mustycodified.online_book_store.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ public class Book extends Base {
     private String author;
 
     @Column(nullable = false, unique = true)
+    @Pattern(regexp = "^[0-9-]+$", message = "ISBN must contain only digits and dashes")
     private String isbn;
 
     @Column(nullable = false)

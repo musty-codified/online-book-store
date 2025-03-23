@@ -63,7 +63,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
   ```sh
   Authorization: Bearer <your-token-here>
   ```
-
+- Each request goes through a **JWT filter** that validates token & sets security context
 ---
 
 ## 4. Running Unit Tests ##

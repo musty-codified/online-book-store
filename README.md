@@ -7,12 +7,12 @@ The system also simulates payment processing and supports role-based access cont
 ## 1. Tech Stack ##
 
 - **Java 17+(LTS)**
-- **Spring Boot 3.x.x**
+- **Spring Boot  3.x.x**
 - **H2 Database** (Embedded, no separate installation needed)
 - **Spring Security with JWT**
 - **JUnit 5 + Mockito** (unit testing)
 - **Maven** (build tool)
-- **Git**
+- **Git** 
 
 ## 2. Local Setup & Installation ##
 
@@ -22,7 +22,7 @@ The system also simulates payment processing and supports role-based access cont
 
   `mvn clean install`
 
-- **Configure environment:**  Configure `application-dev.yml` with your custom configurations
+- **Configure environment:**  Configure `application.yml` with your custom configurations
 
 - **Run the Application:** `mvn spring-boot:run`
 
@@ -39,7 +39,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 - (POST) [Register new user](http://localhost:8090/api/v1/users) `/api/v1/users`
 - (POST) [Authenticate & get JWT token](http://localhost:8090/api/v1/auth/login) `/api/v1/auth/login`
 
-### 3.2 Book Management APIs ###
+### 3.2 Book Management API ###
 
 - (GET) [Search or list books](http://localhost:8090/api/v1/books)
   `/api/v1/books?pageNumber=1&pageSize=2&searchText=Hitchhiker`
@@ -68,7 +68,7 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ## 4. Running Unit Tests ##
 
-Unit testing covers key functionalities.
+Unit tests covers key functionalities.
 - **To run unit tests:** `mvn test`
 - **The test suite uses JUnit 5 and Mockito**
 - **Services tested include: UserService, CartService, OrderService, and BookService**

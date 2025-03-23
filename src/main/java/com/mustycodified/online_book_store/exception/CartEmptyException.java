@@ -5,10 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OutOfStockException extends RuntimeException {
+public class CartEmptyException extends RuntimeException {
     private String message;
 
-    public OutOfStockException(String message) {
+    public CartEmptyException(String message) {
         super(message);
         this.message = message;
     }

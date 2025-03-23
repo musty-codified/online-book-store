@@ -73,10 +73,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, NOT_FOUND);
     }
 
-    @ExceptionHandler(OutOfStockException.class)
-    public ResponseEntity<ApiResponse<String>> handleOutOfStockException(OutOfStockException e) {
+    @ExceptionHandler(CartEmptyException.class)
+    public ResponseEntity<ApiResponse<String>> handleCartEmptyException(CartEmptyException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
-        return new ResponseEntity<>(errorResponse, NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

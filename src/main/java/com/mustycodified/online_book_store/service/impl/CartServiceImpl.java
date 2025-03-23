@@ -39,28 +39,42 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
         Cart cart = user.getCart();
+        if (cart == null) {
+            cart = cartRepository.save(Cart.builder().user(user).build());
+        }
+        List<CartItem> existingItems = cart.getCartItems();
+        CartItem existingItem = existingItems.stream()
+                .filter(item -> item.getBook().getId().equals(cartItemsDto.getBookId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + cartItemsDto.getQuantity());
+            cartItemRepository.save(existingItem);
+            return mapper.mapToCartItemsDto(existingItem);
+        }
         CartItem cartItem = mapper.mapToCartItems(cartItemsDto);
-        assert cart != null;
-        List<CartItem> items = cart.getCartItems();
-        cart.getCartItems().add(cartItem);
-        cart.setCartItems(items);
-        return mapper.mapToCartItemsDto(cartItemRepository.save(cartItem));
+        cartItem.setCart(cart);
+        CartItem savedItem = cartItemRepository.save(cartItem);
+//        List<CartItem> items = cart.getCartItems();
+        cart.getCartItems().add(savedItem);
+        cartRepository.save(cart);
+//        cart.setCartItems(items);
+        return mapper.mapToCartItemsDto(savedItem);
 
     }
 
     @Override
     public String clearCart(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found", HttpStatus.NOT_FOUND.name()));
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
         Cart cart = user.getCart();
-        List<CartItem> cartItems = cart.getCartItems();
-
-        for (CartItem item : cartItems) {
-            cartItemRepository.deleteById(item.getId());
+        if (cart == null || cart.getCartItems().isEmpty()) {
+            return "Cart is already empty";
         }
-
-        cartItems.clear();
-        cart.setCartItems(cartItems);
+        cart.getCartItems().forEach(cartItem -> cartItemRepository.deleteById(cartItem.getId()));
+        cart.getCartItems().clear();
+        cart.setCartItems(cart.getCartItems());
         cartRepository.save(cart);
         return "Cart cleared successfully";
     }

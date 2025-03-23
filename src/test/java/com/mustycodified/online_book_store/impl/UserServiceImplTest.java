@@ -38,28 +38,27 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    UserRequestDto userRequestDto;
-    User user;
-    UserResponseDto userResponseDto;
+    private UserRequestDto userRequestDto;
+    private User user;
+    private UserResponseDto userResponseDto;
+
     String email = "Johnuser@gmail.com";
     String firstName = "John";
     String lastName = "Doe";
     String password = "Password#123";
     String encodedPassword = "encodedPassword#123";
     String role = "ADMIN";
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        userRequestDto = createUserRequestDto();
+        user = createUser();
+        userResponseDto = createUserResponseDto();
     }
 
     @Test
     @DisplayName("createUser_ReturnCreatedUserResponse")
     void testCreateNewUser_ReturnsCreatedUser() {
-
-        userRequestDto = createUserRequestDto();
-        user = createUser();
-        userResponseDto = createUserResponseDto();
 
         when(userRepository.existsByEmail(userRequestDto.getEmail())).thenReturn(false);
         when(userRepository.save(any(User.class))).thenReturn(user);
@@ -87,17 +86,6 @@ class UserServiceImplTest {
         ResourceAlreadyExistException exception = assertThrows(ResourceAlreadyExistException.class, () -> userService.createUser(userRequestDto));
         assertEquals("User already exists", exception.getMessage());
     }
-
-//    @Test
-//    void login_NonexistentEmail_ThrowsResourceNotFoundException() {
-//        Long userId = 1L;
-//        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-//
-//        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> userService.login(new LoginRequestDto()));
-//        assertEquals("User with id " + userId + " does not exist", exception.getMessage());
-//    }
-
-
 
     private UserRequestDto createUserRequestDto(){
         userRequestDto = new UserRequestDto();

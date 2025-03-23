@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/carts")
 @RequiredArgsConstructor
 @Validated
-
 public class CartController {
     private final CartService cartService;
     @GetMapping("/{userId}")

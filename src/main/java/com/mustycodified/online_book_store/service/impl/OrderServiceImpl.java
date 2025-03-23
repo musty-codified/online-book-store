@@ -5,6 +5,7 @@ import com.mustycodified.online_book_store.dto.response.ApiResponse;
 import com.mustycodified.online_book_store.dto.response.OrderResponseDto;
 import com.mustycodified.online_book_store.entity.*;
 import com.mustycodified.online_book_store.enums.OrderStatus;
+import com.mustycodified.online_book_store.exception.CartEmptyException;
 import com.mustycodified.online_book_store.exception.ResourceNotFoundException;
 import com.mustycodified.online_book_store.repository.CartRepository;
 import com.mustycodified.online_book_store.repository.OrderRepository;
@@ -38,6 +39,9 @@ public class OrderServiceImpl implements OrderService {
         Cart cart = cartRepository.findByUserId(orderRequestDto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cart Not Found", HttpStatus.NOT_FOUND.name()));
         List<CartItem> cartItems = cart.getCartItems();
+        if (cartItems == null || cartItems.isEmpty()) {
+            throw new CartEmptyException("Cart is empty. Cannot proceed to checkout.");
+        }
         double totalPrice = cartItems.stream()
                 .mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
         User user = cart.getUser();

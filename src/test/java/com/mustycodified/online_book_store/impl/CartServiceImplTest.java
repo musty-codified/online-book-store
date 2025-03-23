@@ -2,6 +2,7 @@ package com.mustycodified.online_book_store.impl;
 
 import com.mustycodified.online_book_store.dto.CartItemsDto;
 import com.mustycodified.online_book_store.dto.response.CartResponseDto;
+import com.mustycodified.online_book_store.entity.Book;
 import com.mustycodified.online_book_store.entity.Cart;
 import com.mustycodified.online_book_store.entity.CartItem;
 import com.mustycodified.online_book_store.entity.User;
@@ -37,57 +38,64 @@ class CartServiceImplTest {
     @InjectMocks
     private CartServiceImpl cartService;
 
-    Cart cart;
+    private User user;
+    private Cart cart;
+    private CartItemsDto cartItemsDto;
+    private CartItemsDto expectedResponse;
+    private CartItem cartItem;
     List<CartItem> cartItemList = new ArrayList<>();
-
-    CartItemsDto cartItemsDto;
-    Long userId = 1L;
-
     CartResponseDto cartResponseDto;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
 
-    @Test
-    @DisplayName("addItemToCart_ReturnsCartItemDto")
-    final void testAddItemToCart_ReturnsCartItemResponseDto() {
+        user = new User();
+        user.setId(1L);
+
+        cart = new Cart();
+        cart.setCartItems(cartItemList);
+        user.setCart(cart);
 
         //Request DTO
         cartItemsDto = new CartItemsDto();
         cartItemsDto.setBookId(1L);
         cartItemsDto.setQuantity(5);
 
-        CartItem cartItemEntity = new CartItem();
-        cartItemEntity.setId(1L);
+        cartItem = new CartItem();
+        cartItem.setId(1L);
+        cartItem.setBook(new Book());
 
         //Response dto
-        CartItemsDto expectedResponse = new CartItemsDto();
+        expectedResponse = new CartItemsDto();
         cartItemsDto.setBookId(1L);
         cartItemsDto.setQuantity(5);
 
-        cart = new Cart();
-        cart.setCartItems(cartItemList);
+        //Response dto
+        cartResponseDto = new CartResponseDto();
+        cartResponseDto.setUserId(user.getId());
+        cartResponseDto.setCartItemsDto(new ArrayList<>());
+    }
 
-        User userEntity = new User();
-        userEntity.setId(userId);
-        userEntity.setCart(cart);
+    @Test
+    @DisplayName("addItemToCart_ReturnsCartItemDto")
+    final void testAddItemToCart_ReturnsCartItemResponseDto() {
 
         // Mocks
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-        when(mapper.mapToCartItems(cartItemsDto)).thenReturn(cartItemEntity);
-        when(cartItemRepository.save(any(CartItem.class))).thenReturn(cartItemEntity);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(mapper.mapToCartItems(cartItemsDto)).thenReturn(cartItem);
+        when(cartItemRepository.save(any(CartItem.class))).thenReturn(cartItem);
         when(mapper.mapToCartItemsDto(any(CartItem.class))).thenReturn(expectedResponse);
+        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
 
         //when
-        CartItemsDto returnValue = cartService.addItemToCart(userId, cartItemsDto);
+        CartItemsDto returnValue = cartService.addItemToCart(user.getId(), cartItemsDto);
 
         //Then
         assertNotNull(returnValue);
         assertEquals(expectedResponse.getBookId(), returnValue.getBookId());
-        verify(userRepository).findById(userId);
-        verify(cartItemRepository).save(cartItemEntity);
+        verify(userRepository).findById(user.getId());
+        verify(cartItemRepository).save(cartItem);
         verify(mapper).mapToCartItemsDto(any(CartItem.class));
         verify(cartItemRepository, times(1)).save(any(CartItem.class));
 
@@ -96,30 +104,14 @@ class CartServiceImplTest {
     @Test
     @DisplayName("viewCartContent_ReturnsCartResponseDto")
     final void testViewCartContent_ReturnsCartResponseDto() {
-
-        //Response dto
-        cartResponseDto = new CartResponseDto();
-        cartResponseDto.setUserId(userId);
-        cartResponseDto.setCartItemsDto(new ArrayList<>());
-
-        cart = new Cart();
-        cart.setCartItems(cartItemList);
-
-        User userEntity = new User();
-        userEntity.setId(userId);
-        userEntity.setCart(cart);
-
-        // Mocks
-        when(cartRepository.findByUserId(userId)).thenReturn(Optional.of(cart));
+        when(cartRepository.findByUserId(user.getId())).thenReturn(Optional.of(cart));
         when(mapper.mapToCartDto(cart)).thenReturn(cartResponseDto);
 
-        //when
-        CartResponseDto returnValue = cartService.viewCartContent(userId);
+        CartResponseDto returnValue = cartService.viewCartContent(user.getId());
 
-        //Then
         assertNotNull(returnValue);
         assertEquals(cartResponseDto.getUserId(), returnValue.getUserId());
-        verify(cartRepository).findByUserId(userId);
+        verify(cartRepository).findByUserId(user.getId());
         verify(mapper).mapToCartDto(cart);
 
     }
@@ -128,8 +120,6 @@ class CartServiceImplTest {
     @DisplayName("clearCart_ReturnsSuccessMessage")
     final void testClearCart_ReturnsSuccessMessage() {
 
-        //Response dto
-        String message = "Cart cleared successfully";
         CartItem cartItem1 = new CartItem();
         cartItem1.setId(1L);
 
@@ -142,16 +132,14 @@ class CartServiceImplTest {
         cart = new Cart();
         cart.setCartItems(cartItemList);
 
-        User userEntity = new User();
-        userEntity.setId(userId);
-        userEntity.setCart(cart);
+        String message = "Cart cleared successfully";
 
         // Mocks
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
+        when(userRepository.findById(this.user.getId())).thenReturn(Optional.of(user));
         when(cartRepository.save(cart)).thenReturn(cart);
 
         // When
-        String returnValue = cartService.clearCart(userId);
+        String returnValue = cartService.clearCart(this.user.getId());
 
         //Then
         assertEquals(message, returnValue);

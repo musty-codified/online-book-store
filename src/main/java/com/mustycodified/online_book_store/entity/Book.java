@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

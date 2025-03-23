@@ -111,8 +111,6 @@ class OrderServiceImplTest {
     @Test
     @DisplayName("createOrder_ReturnsOrderDto")
     final void testCreateOrder_ReturnsOrderResponseDto() {
-
-
         // Mocks
         when(cartRepository.findByUserId(user.getId())).thenReturn(Optional.of(cart));
         when(orderRepository.save(any(Order.class))).thenReturn(order);

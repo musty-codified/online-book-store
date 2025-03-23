@@ -43,8 +43,8 @@ class CartServiceImplTest {
     private CartItemsDto cartItemsDto;
     private CartItemsDto expectedResponse;
     private CartItem cartItem;
-    List<CartItem> cartItemList = new ArrayList<>();
-    CartResponseDto cartResponseDto;
+    private List<CartItem> cartItemList = new ArrayList<>();
+    private CartResponseDto cartResponseDto;
 
     @BeforeEach
     void setUp() {
@@ -66,12 +66,12 @@ class CartServiceImplTest {
         cartItem.setId(1L);
         cartItem.setBook(new Book());
 
-        //Response dto
+        //Add to cart Response DTO
         expectedResponse = new CartItemsDto();
         cartItemsDto.setBookId(1L);
         cartItemsDto.setQuantity(5);
 
-        //Response dto
+        //Response DTO
         cartResponseDto = new CartResponseDto();
         cartResponseDto.setUserId(user.getId());
         cartResponseDto.setCartItemsDto(new ArrayList<>());
@@ -132,8 +132,6 @@ class CartServiceImplTest {
         cart = new Cart();
         cart.setCartItems(cartItemList);
 
-        String message = "Cart cleared successfully";
-
         // Mocks
         when(userRepository.findById(this.user.getId())).thenReturn(Optional.of(user));
         when(cartRepository.save(cart)).thenReturn(cart);
@@ -142,7 +140,7 @@ class CartServiceImplTest {
         String returnValue = cartService.clearCart(this.user.getId());
 
         //Then
-        assertEquals(message, returnValue);
+        assertEquals("Cart cleared successfully", returnValue);
         verify(cartItemRepository).deleteById(1L);
         verify(cartItemRepository).deleteById(2L);
         verify(cartRepository).save(cart);

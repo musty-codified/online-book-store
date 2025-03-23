@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,27 +33,20 @@ class BookServiceImplTest {
     @InjectMocks
     private BookServiceImpl bookService;
 
-    Book book1;
-    Book book2;
-    BookResponseDto bookDto1;
-    BookResponseDto bookDto2;
-    String searchText = "Java";
-
+    private Book book1;
+    private Book book2;
+    private BookResponseDto bookDto1;
+    private BookResponseDto bookDto2;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    @DisplayName("getAllBooks_ReturnsPaginatedBooks")
-    final void getAllBooks_ReturnsPaginatedBookList(){
 
         book1 = new Book();
-        book1.setIsbn("1023-1234567");
+        book1.setIsbn("978-1-56619-909-4");
         book1.setTitle("Head First Java");
 
         book2 = new Book();
-        book2.setIsbn("1234-1234567");
+        book2.setIsbn("438-0-56019-903-4");
         book2.setTitle("Java Spring Boot");
 
         bookDto1 = new BookResponseDto();
@@ -66,6 +58,11 @@ class BookServiceImplTest {
         bookDto2.setId(2L);
         bookDto2.setIsbn(book2.getIsbn());
         bookDto2.setTitle(book2.getTitle());
+    }
+
+    @Test
+    @DisplayName("getAllBooks_ReturnsBooks")
+    final void getAllBooks_ReturnsPaginatedBookList() {
 
         Pageable pageable = PageRequest.of(0, 5);
         List<Book> bookList = List.of(book1, book2);
@@ -76,24 +73,19 @@ class BookServiceImplTest {
         when(mapper.mapToBookResponseDto(book1)).thenReturn(bookDto1);
         when(mapper.mapToBookResponseDto(book2)).thenReturn(bookDto2);
 
-        ApiResponse.Wrapper<List<BookResponseDto>> returnValue = bookService.getAllBooks(searchText, pageable);
-       BookResponseDto responseDto = returnValue.getContent().get(0);
+        ApiResponse.Wrapper<List<BookResponseDto>> returnValue = bookService.getAllBooks("Java", pageable);
+        BookResponseDto responseDto = returnValue.getContent().get(0);
         System.out.println(responseDto.getTitle());
 
         assertNotNull(returnValue);
         assertEquals(2, returnValue.getTotalItems());
         assertEquals("Head First Java", returnValue.getContent().get(0).getTitle());
-        verify(bookRepository).fetchAllBooks(eq(searchText), eq(pageable));
+        verify(bookRepository).fetchAllBooks(eq("Java"), eq(pageable));
         verify(bookRepository, times(0)).save(book1);
         verify(bookRepository, times(0)).save(book2);
         verify(mapper, times(1)).mapToBookResponseDto(book1);
         verify(mapper, times(1)).mapToBookResponseDto(book2);
 
     }
-
-    private LocalDateTime date() {
-        return LocalDateTime.now().minusDays(3);
-    }
-
 
 }

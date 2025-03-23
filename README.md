@@ -73,7 +73,7 @@ Unit testing covers key functionalities.
 - **The test suite uses JUnit 5 and Mockito**
 - **Services tested include: UserService, CartService, OrderService, and BookService**
 
-### 5. application.yml Configuration ##
+## 5. application.yml Configuration ##
 Authorization is abstracted via configurable permissions in application.yml:
 This configuration is automatically mapped using the Spring @ConfigurationProperties setup in the `PermissionConfig` class present under the `config` package:
 ```

@@ -75,7 +75,7 @@ Unittests covers key functionalities.
 
 ## 5. Configuration ##
 
-All app settings are in application.yml including Authorization permissions.
+All app settings are in `application.yml` including Authorization permissions.
 This configuration is mapped using Spring @ConfigurationProperties setup in `PermissionConfig` class, 
 which is present under the `config` package:
 

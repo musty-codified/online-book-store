@@ -45,14 +45,14 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ### 3.3 Cart Management APIs ###
 
-- (POST)  `/api/v1/carts/1` Add item to cart
-- (GET)  `/api/v1/carts/1` View cart contents
-- (DELETE)  `/api/v1/carts/1` Clear cart contents
+- (POST)  `/api/v1/carts/{userId}` Add item to cart
+- (GET)  `/api/v1/carts/{userId}` View cart contents
+- (DELETE)  `/api/v1/carts/{userId}` Clear cart contents
 
 ### 3.4 Order Management APIs ###
 
 - (POST)  `/api/v1/orders/checkout` Checkout using payment method
-- (GET)  `/api/v1/orders/1/history?pageNumber=1&pageSize=2` View order history
+- (GET)  `/api/v1/orders/{userId}/history?pageNumber=1&pageSize=2` View order history
 
 
 ### 3.5 API Authentication ###

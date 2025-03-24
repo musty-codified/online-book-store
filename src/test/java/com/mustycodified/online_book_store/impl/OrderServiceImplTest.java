@@ -5,6 +5,7 @@ import com.mustycodified.online_book_store.dto.response.ApiResponse;
 import com.mustycodified.online_book_store.dto.response.OrderResponseDto;
 import com.mustycodified.online_book_store.entity.*;
 import com.mustycodified.online_book_store.enums.PaymentMethod;
+import com.mustycodified.online_book_store.exception.ResourceNotFoundException;
 import com.mustycodified.online_book_store.repository.CartRepository;
 import com.mustycodified.online_book_store.repository.OrderRepository;
 import com.mustycodified.online_book_store.service.CartService;
@@ -133,6 +134,18 @@ class OrderServiceImplTest {
     }
 
     @Test
+    void testCreateOrder_CartNotFound_ThrowsException() {
+        when(cartRepository.findByUserId(user.getId())).thenReturn(Optional.empty());
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () ->
+                orderService.createOrder(orderRequestDto));
+
+        assertEquals("Cart Not Found", exception.getMessage());
+        verifyNoInteractions(orderRepository);
+        verifyNoInteractions(cartService);
+        verifyNoInteractions(paymentService);
+    }
+
+    @Test
     @DisplayName("viewPurchaseHistory_ReturnsOrderList")
     final void testViewPurchaseHistory_ReturnsOrderResponseDtoList() {
         Order order1 = new Order();
@@ -154,7 +167,6 @@ class OrderServiceImplTest {
         Page<Order> orderPage = new PageImpl<>(orderList, pageable, orderList.size());
 
         when(orderRepository.fetchAllOrders(anyLong(), eq(pageable))).thenReturn(orderPage);
-
         when(mapper.mapToOrderResponseDto(order1)).thenReturn(orderResponseDto1);
         when(mapper.mapToOrderResponseDto(order2)).thenReturn(orderResponseDto2);
 

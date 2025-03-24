@@ -6,6 +6,7 @@ import com.mustycodified.online_book_store.entity.Book;
 import com.mustycodified.online_book_store.entity.Cart;
 import com.mustycodified.online_book_store.entity.CartItem;
 import com.mustycodified.online_book_store.entity.User;
+import com.mustycodified.online_book_store.exception.ResourceNotFoundException;
 import com.mustycodified.online_book_store.repository.CartItemRepository;
 import com.mustycodified.online_book_store.repository.CartRepository;
 import com.mustycodified.online_book_store.repository.UserRepository;
@@ -99,6 +100,23 @@ class CartServiceImplTest {
         verify(mapper).mapToCartItemsDto(any(CartItem.class));
         verify(cartItemRepository, times(1)).save(any(CartItem.class));
 
+    }
+
+    @Test
+    @DisplayName("addItemToCart_ThrowsResourceNotFoundException")
+    void testAddItemToCart_ResourceNotFound_ThrowsException() {
+        // Given
+        Long userId = 99L;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () ->
+                cartService.addItemToCart(userId, cartItemsDto));
+
+        assertEquals("User Not Found", exception.getMessage());
+        verify(userRepository).findById(userId);
+        verifyNoInteractions(cartItemRepository);
+        verifyNoInteractions(mapper);
     }
 
     @Test

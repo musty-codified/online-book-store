@@ -73,26 +73,13 @@ Unittests covers key functionalities.
 - **The test suite uses JUnit 5 and Mockito**
 - **Services tested include: UserService, CartService, OrderService, and BookService**
 
-## 5. application.yml Configuration ##
-Authorization is abstracted via configurable permissions in application.yml:
-This configuration is automatically mapped using the Spring @ConfigurationProperties setup in the `PermissionConfig` class present under the `config` package:
-```
-access-control-list:
-  permissions:
-    - permission: "user.read"
-      methods: ["GET"]
-      patterns: ["/books/**", "/carts/**", "/orders/**"]
+## 5. Configuration ##
 
-    - permission: "user.write"
-      methods: ["POST", "PUT"]
-      patterns: ["/carts/**", "/orders/**"]
+All app settings are in application.yml including Authorization permissions.
+This configuration is mapped using Spring @ConfigurationProperties setup in `PermissionConfig` class, 
+which is present under the `config` package:
 
-    - permission: "user.delete"
-      methods: [ "DELETE"]
-      patterns: ["/carts/**"]
-
-```
-Below is a full sample of the application.yml:
+ application.yml:
 ```
 spring:
   datasource:

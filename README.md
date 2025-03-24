@@ -164,15 +164,6 @@ Access H2 console at:
     }
 ```
 
-| Endpoint                | Method | Description                   | Auth Required |
-|-------------------------|--------|-------------------------------|---------------|
-| `/api/auth/register`    | POST   | Register new user             | ❌            |
-| `/api/auth/login`       | POST   | Authenticate & get JWT token  | ❌            |
-| `/api/books/search`     | GET    | Search or list books          | ✅            |
-| `/api/cart/add`         | POST   | Add item to cart              | ✅            |
-| `/api/cart/{userId}`    | GET    | View cart contents            | ✅            |
-| `/api/orders/checkout`  | POST   | Checkout using payment method | ✅            |
-| `/api/orders/{userId}`  | GET    | View order history            | ✅            |
 
 
 

@@ -56,10 +56,8 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = mapper.mapToCartItems(cartItemsDto);
         cartItem.setCart(cart);
         CartItem savedItem = cartItemRepository.save(cartItem);
-//        List<CartItem> items = cart.getCartItems();
         cart.getCartItems().add(savedItem);
         cartRepository.save(cart);
-//        cart.setCartItems(items);
         return mapper.mapToCartItemsDto(savedItem);
 
     }

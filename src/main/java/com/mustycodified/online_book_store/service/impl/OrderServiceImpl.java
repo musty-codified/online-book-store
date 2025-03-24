@@ -57,9 +57,10 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItems);
         Order savedOrder = orderRepository.save(order);
         cartService.clearCart(orderRequestDto.getUserId());
+        OrderResponseDto response = mapper.mapToOrderResponseDto(savedOrder);
 
         paymentService.processPayment(savedOrder);
-        return mapper.mapToOrderResponseDto(savedOrder);
+        return response;
     }
 
     @Override

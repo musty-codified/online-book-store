@@ -36,30 +36,29 @@ The REST API endpoints are prefixed with `/api/v1` due to the context-path setti
 
 ### 3.1 User Auth APIs ###
 
-- (POST) [Register new user](http://localhost:8090/api/v1/users) `/api/v1/users`
-- (POST) [Authenticate & get JWT token](http://localhost:8090/api/v1/auth/login) `/api/v1/auth/login`
+- (POST)  `/api/v1/users` Register new user
+- (POST)  `/api/v1/auth/login` Authenticate & get JWT token
 
 ### 3.2 Book Management API ###
 
-- (GET) [Search or list books](http://localhost:8090/api/v1/books)
-  `/api/v1/books?pageNumber=1&pageSize=2&searchText=Hitchhiker`
+- (GET) `/api/v1/books?pageNumber=1&pageSize=2&searchText=Hitchhiker` Search or list books
 
 ### 3.3 Cart Management APIs ###
 
-- (POST) [Add item to cart](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1`
-- (GET) [View cart contents](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1`
-- (DELETE) [Clear cart contents](http://localhost:8090/api/v1/carts/{userId}) `/api/v1/carts/1`
+- (POST)  `/api/v1/carts/1` Add item to cart
+- (GET)  `/api/v1/carts/1` View cart contents
+- (DELETE)  `/api/v1/carts/1` Clear cart contents
 
 ### 3.4 Order Management APIs ###
 
-- (POST) [Checkout using payment method](http://localhost:8090/api/v1/orders/checkout) `/api/v1/orders/checkout`
-- (GET) [View order history](http://localhost:8090/api/v1/orders/{userId}/history)
-  `/api/v1/orders/1/history?pageNumber=1&pageSize=2`
+- (POST)  `/api/v1/orders/checkout` Checkout using payment method
+- (GET)  `/api/v1/orders/1/history?pageNumber=1&pageSize=2` View order history
+
 
 ### 3.5 API Authentication ###
 
 - Secure endpoints require a **JWT token** for access.
-- Obtain a token via the **User Login API** and pass in the request header:
+- Obtain a token via the **User Login endpoint** and pass it in the request header:
   ```sh
   Authorization: Bearer <your-token-here>
   ```

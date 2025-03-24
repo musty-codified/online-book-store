@@ -103,8 +103,8 @@ class CartServiceImplTest {
     }
 
     @Test
-    @DisplayName("addItemToCart_ThrowsResourceNotFoundException")
-    void testAddItemToCart_ResourceNotFound_ThrowsException() {
+    @DisplayName("addItemToCart_ThrowsException")
+    void testAddItemToCart_UserNotFound_ThrowsException() {
         // Given
         Long userId = 99L;
 

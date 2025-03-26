@@ -96,11 +96,11 @@ spring:
     
 server:
   servlet:
-    context-path: /api/v1
-  port: 8090    
+    context-path: /api/v1  # Important: Setting the context path
+  port: 8090  # Or any other port  
 
 jwt:
-  secret: ${JWT_SECRET:eab7efd5799142acb5f308ba2e54cdfa589bfc369f8c9a7bfe53ddab4f5421ce}
+  secret: your_secret_key_here  # IMPORTANT: Change this in production!  Use a strong, randomly generated secret.
   expiration: 3600 # 1 hour
 
 access-control-list:

@@ -25,7 +25,7 @@ public class PaymentService {
     private final UserRepository userRepository;
 
     @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void processPayment(Order order) {
         try {
             log.info("processing payment asynchronously for order:{}, Thread:{}", order.getId(), Thread.currentThread().getName());

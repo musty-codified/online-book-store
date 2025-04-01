@@ -4,6 +4,7 @@ package com.mustycodified.online_book_store.util;
 import com.github.javafaker.Faker;
 import com.mustycodified.online_book_store.entity.Book;
 import com.mustycodified.online_book_store.entity.User;
+import com.mustycodified.online_book_store.enums.Genre;
 import com.mustycodified.online_book_store.repository.BookRepository;
 import com.mustycodified.online_book_store.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,14 @@ public class DummyData implements CommandLineRunner {
 
     private Book createBook() {
         String rawIsbn = faker.code().isbn13();
-        String[] genres = {"Fiction", "Thriller", "Mystery", "Poetry", "Horror", "Satire"};
+        String[] genres = {
+                Genre.FICTION.getGenre(),
+                Genre.MYSTERY.getGenre(),
+                Genre.THRILLER.getGenre(),
+                Genre.POETRY.getGenre(),
+                Genre.HORROR.getGenre(),
+                Genre.SATIRE.getGenre()
+        };
 
         return Book.builder()
                 .title(faker.book().title())

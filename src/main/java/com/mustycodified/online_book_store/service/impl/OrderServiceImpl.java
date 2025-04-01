@@ -13,6 +13,7 @@ import com.mustycodified.online_book_store.service.CartService;
 import com.mustycodified.online_book_store.service.OrderService;
 import com.mustycodified.online_book_store.util.CustomMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
@@ -36,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
+
         Cart cart = cartRepository.findByUserId(orderRequestDto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cart Not Found", HttpStatus.NOT_FOUND.name()));
         List<CartItem> cartItems = cart.getCartItems();
@@ -58,8 +61,9 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order);
         cartService.clearCart(orderRequestDto.getUserId());
         OrderResponseDto response = mapper.mapToOrderResponseDto(savedOrder);
-
+        log.info("{} Order has been recorded for user ID :{}", order.getOrderStatus(), user.getId());
         paymentService.processPayment(savedOrder);
+        order.setOrderStatus(OrderStatus.COMPLETED.toString());
         return response;
     }
 

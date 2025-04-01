@@ -1,5 +1,6 @@
 package com.mustycodified.online_book_store.service.impl;
 
+import org.springframework.transaction.annotation.Transactional;
 import com.mustycodified.online_book_store.dto.CartItemsDto;
 import com.mustycodified.online_book_store.dto.response.CartResponseDto;
 import com.mustycodified.online_book_store.entity.Cart;
@@ -12,6 +13,7 @@ import com.mustycodified.online_book_store.repository.UserRepository;
 import com.mustycodified.online_book_store.service.CartService;
 import com.mustycodified.online_book_store.util.CustomMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
@@ -63,6 +66,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public String clearCart(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found", HttpStatus.NOT_FOUND.name()));
@@ -74,6 +78,8 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().clear();
         cart.setCartItems(cart.getCartItems());
         cartRepository.save(cart);
+        log.info("Cart ID: {} has been cleared for user ID :{}", cart.getId(), user.getId());
+
         return "Cart cleared successfully";
     }
 }

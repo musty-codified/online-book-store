@@ -2,6 +2,7 @@ package com.mustycodified.online_book_store.entity;
 
 
 import com.mustycodified.online_book_store.enums.PaymentMethod;
+import com.mustycodified.online_book_store.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,5 +36,10 @@ public class Order extends Base{
 
     @Column(nullable = false)
     private String orderStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    private String transactionReference;
 
 }
